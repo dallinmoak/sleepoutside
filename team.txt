@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 nick
+=======
+https://trello.com/b/by30S8qf/wdd310 
+-dallin
+>>>>>>> 0baea1ab708f9bef270b6c35968fb1c5706736bd
