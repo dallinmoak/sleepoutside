@@ -1,7 +1,8 @@
 import { getParam } from "./utils.mjs";
-import renderProductDetails, { addProductToCart } from "./productDetails.mjs"; 
-import ProductData from "./ProductData.mjs"
+import renderProductDetails from "./productDetails.mjs"; 
 
+const productId = getParam("product"); 
+renderProductDetails(productId, ".product-detail"); 
 
 //MOVED TO productDetails.mjs
 
@@ -22,7 +23,7 @@ import ProductData from "./ProductData.mjs"
 //   .getElementById("addToCart")
 //   .addEventListener("click", addToCartHandler);
 
-const productId = getParam('product'); 
+
 // const myProduct = new ProductData("tents"); 
 // async function getProduct() {
 //   const currentProduct = await myProduct.findProductById(productId); 
@@ -30,4 +31,4 @@ const productId = getParam('product');
 // }
 // getProduct(); 
 
-renderProductDetails(productId, ".product-detail"); 
+
