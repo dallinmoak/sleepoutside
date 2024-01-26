@@ -1,7 +1,7 @@
-import { addItemToStorageArray } from "./utils.mjs";
+import { getLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
-  const cartItems = addItemToStorageArray("so-cart");
+  const cartItems = getLocalStorage("so-cart");
   if (cartItems == null) {
     const emptyCart = `<h3 class="empty-cart">Your Cart is Empty!</h3>`
     document.querySelector("#empty-cart-message").innerHTML = emptyCart; 

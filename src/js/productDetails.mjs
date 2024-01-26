@@ -12,9 +12,11 @@ let product = {};
 
 export default async function renderProductDetails(productId, selector) {
     product = await myProduct.findProductById(productId); 
+    console.log(product);
     const el = document.querySelector(selector); 
-    el.insertAdjacentHTML("afterBegin", productDetailsTemplate(product)); 
-    document.getElementById("addToCart").addEventListener("click", addToCart);
+    el.innerHTML = productDetailsTemplate(product); 
+    document.getElementById("addToCart").addEventListener("click", ()=> addToCart(product));
+    
     // const currentProduct = await myProduct.findProductById(productId); 
     // document.querySelector(selector).innerHTML = productDetailsTemplate(currentProduct); 
     // use findProductById to get the details for the current product. findProductById will return a promise! use await or .then() to process it
