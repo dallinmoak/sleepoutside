@@ -16,17 +16,39 @@ export default async function renderProductDetails(productId, selector) {
 
 export function addToCart(newProduct) {
   const matchId = checkCartForItem(newProduct);
-  if (matchId < 0) {
+  if (matchId == -1) {
     addItemToStorageArray("so-cart", { ...newProduct, quantity: 1 });
   } else {
     incrementCartItemQuantity(matchId);
   }
 }
 
-function incrementCartItemQuantity(matchId) {
+export function incrementCartItemQuantity(matchId, amount = 1) {
   const cartItems = getLocalStorage("so-cart");
-  cartItems[matchId].quantity++;
-  localStorage.setItem("so-cart", JSON.stringify(cartItems));
+  const newCartItems = cartItems.map((item) => {
+    if (item.Id === matchId) {
+      item.quantity += amount;
+    }
+    return item;
+  });
+  localStorage.setItem("so-cart", JSON.stringify(newCartItems));
+}
+
+export function decrementCartItemQuantity(matchId, amount = 1) {
+  const cartItems = getLocalStorage("so-cart");
+  const newCartItems = cartItems
+    .map((item) => {
+      if (item.Id === matchId) {
+        if (item.quantity == 1) {
+          // if the quantity is 1, remove the item from the cart instead of having a quantity of 0
+          return null;
+        }
+        item.quantity -= amount;
+      }
+      return item;
+    })
+    .filter((item) => item !== null);
+  localStorage.setItem("so-cart", JSON.stringify(newCartItems));
 }
 
 function checkCartForItem(newProduct) {
@@ -34,7 +56,8 @@ function checkCartForItem(newProduct) {
   if (cartItems == null) {
     return -1;
   } else {
-    const matchId = cartItems.findIndex((item) => item.Id === newProduct.Id);
+    const match = cartItems.find((item) => item.Id === newProduct.Id);
+    const matchId = match ? match.Id : -1;
     return matchId;
   }
 }

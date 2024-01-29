@@ -1,3 +1,7 @@
+import {
+  decrementCartItemQuantity,
+  incrementCartItemQuantity,
+} from "./productDetails.mjs";
 import { getLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
@@ -8,6 +12,20 @@ function renderCartContents() {
   } else {
     const htmlItems = cartItems.map((item) => cartItemTemplate(item));
     document.querySelector(".product-list").innerHTML = htmlItems.join("");
+    document.querySelectorAll(".increment").forEach((button) =>
+      button.addEventListener("click", () => {
+        const matchId = button.id.replace("inc-", "");
+        incrementCartItemQuantity(matchId);
+        renderCartContents();
+      })
+    );
+    document.querySelectorAll(".decrement").forEach((button) =>
+      button.addEventListener("click", () => {
+        const matchId = button.id.replace("dec-", "");
+        decrementCartItemQuantity(matchId);
+        renderCartContents();
+      })
+    );
   }
 }
 
@@ -24,7 +42,11 @@ function cartItemTemplate(item) {
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
   <p class="cart-card__quantity">qty: ${item.quantity}</p>
-  <p class="cart-card__price">$${item.FinalPrice}</p>
+  <p class="cart-card__price">$${(item.FinalPrice * item.quantity).toFixed(
+    2
+  )}</p>
+  <button class="increment" id="inc-${item.Id}">+</button>
+  <button class="decrement" id="dec-${item.Id}">-</button>
 </li>`;
 
   return newItem;
