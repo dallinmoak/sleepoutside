@@ -6,10 +6,12 @@ import { getLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
-  if (cartItems == null) {
+  if (!cartItems || cartItems.length === 0) {
     const emptyCart = `<h3 class="empty-cart">Your Cart is Empty!</h3>`;
     document.querySelector("#empty-cart-message").innerHTML = emptyCart;
+    document.querySelector(".product-list").innerHTML = "";
   } else {
+    document.querySelector("#empty-cart-message").innerHTML = "";
     const htmlItems = cartItems.map((item) => cartItemTemplate(item));
     document.querySelector(".product-list").innerHTML = htmlItems.join("");
     document.querySelectorAll(".increment").forEach((button) =>
@@ -45,8 +47,12 @@ function cartItemTemplate(item) {
   <p class="cart-card__price">$${(item.FinalPrice * item.quantity).toFixed(
     2
   )}</p>
-  <button class="increment" id="inc-${item.Id}">+</button>
-  <button class="decrement" id="dec-${item.Id}">-</button>
+  <button class="decrement" title="decrese quantity by 1" id="dec-${
+    item.Id
+  }">-</button>
+  <button class="increment" title="increase quantity by 1" id="inc-${
+    item.Id
+  }">+</button>
 </li>`;
 
   return newItem;
