@@ -1,4 +1,4 @@
-import { addItemToStorageArray } from "./utils.mjs";
+import { addItemToStorageArray, getLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 
 const myProduct = new ProductData("tents");
@@ -12,30 +12,70 @@ export default async function renderProductDetails(productId, selector) {
   document
     .getElementById("addToCart")
     .addEventListener("click", () => addToCart(product));
-
-  // use findProductById to get the details for the current product. findProductById will return a promise! use await or .then() to process it
-  // once we have the product details we can render out the HTML
-  // add a listener to Add to Cart button
 }
 
-export function addToCart(product) {
-  addItemToStorageArray("so-cart", product);
+export function addToCart(newProduct) {
+  const matchId = checkCartForItem(newProduct);
+  if (matchId == -1) {
+    addItemToStorageArray("so-cart", { ...newProduct, quantity: 1 });
+  } else {
+    incrementCartItemQuantity(matchId);
+  }
 }
 
-function productDetailsTemplate(product) {
-  return `<h3>${product.Brand.Name}</h3>
-  <h2 class="divider">${product.NameWithoutBrand}</h2>
+export function incrementCartItemQuantity(matchId, amount = 1) {
+  const cartItems = getLocalStorage("so-cart");
+  const newCartItems = cartItems.map((item) => {
+    if (item.Id === matchId) {
+      item.quantity += amount;
+    }
+    return item;
+  });
+  localStorage.setItem("so-cart", JSON.stringify(newCartItems));
+}
+
+export function decrementCartItemQuantity(matchId, amount = 1) {
+  const cartItems = getLocalStorage("so-cart");
+  const newCartItems = cartItems
+    .map((item) => {
+      if (item.Id === matchId) {
+        if (item.quantity == 1) {
+          // if the quantity is 1, remove the item from the cart instead of having a quantity of 0
+          return null;
+        }
+        item.quantity -= amount;
+      }
+      return item;
+    })
+    .filter((item) => item !== null);
+  localStorage.setItem("so-cart", JSON.stringify(newCartItems));
+}
+
+function checkCartForItem(newProduct) {
+  const cartItems = getLocalStorage("so-cart");
+  if (cartItems == null) {
+    return -1;
+  } else {
+    const match = cartItems.find((item) => item.Id === newProduct.Id);
+    const matchId = match ? match.Id : -1;
+    return matchId;
+  }
+}
+
+function productDetailsTemplate(newProduct) {
+  return `<h3>${newProduct.Brand.Name}</h3>
+  <h2 class="divider">${newProduct.NameWithoutBrand}</h2>
   <img
     class="divider"
-    src="${product.Image}"
-    alt="${product.Name}"
+    src="${newProduct.Image}"
+    alt="${newProduct.Name}"
   />
-  <p class="product-card__price">$${product.FinalPrice}</p>
-  <p class="product__color">${product.Colors[0].ColorName}</p>
+  <p class="product-card__price">$${newProduct.FinalPrice}</p>
+  <p class="product__color">${newProduct.Colors[0].ColorName}</p>
   <p class="product__description">
-  ${product.DescriptionHtmlSimple}
+  ${newProduct.DescriptionHtmlSimple}
   </p>
   <div class="product-detail__add">
-    <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+    <button id="addToCart" data-id="${newProduct.Id}">Add to Cart</button>
   </div>`;
 }
