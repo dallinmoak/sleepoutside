@@ -1,5 +1,5 @@
 <script>
-  import ProductData from "../productData.mjs";
+  import ProductData from "../ProductData.mjs";
   export let category;
   const myProductData = new ProductData(category);
   let productListPromise = myProductData.getData();
