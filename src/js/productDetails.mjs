@@ -9,9 +9,10 @@ export default async function renderProductDetails(productId, selector) {
   product = await myProduct.findProductById(productId);
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
-  document
-    .getElementById("addToCart")
-    .addEventListener("click", () => addToCart(product));
+  document.getElementById("addToCart").addEventListener("click", () => {
+    addToCart(product), updateCartCount();
+  });
+  updateCartCount();
 }
 
 export function addToCart(newProduct) {
@@ -59,6 +60,18 @@ function checkCartForItem(newProduct) {
     const match = cartItems.find((item) => item.Id === newProduct.Id);
     const matchId = match ? match.Id : -1;
     return matchId;
+  }
+}
+
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart");
+  let cartCount = 0;
+  if (cartItems) {
+    cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+  const cartCountElement = document.getElementById("cartCount");
+  if (cartCountElement) {
+    cartCountElement.textContent = cartCount;
   }
 }
 
