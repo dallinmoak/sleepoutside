@@ -1,6 +1,7 @@
 import {
   decrementCartItemQuantity,
   incrementCartItemQuantity,
+  updateCartCount,
 } from "./productDetails.mjs";
 import { getLocalStorage } from "./utils.mjs";
 
@@ -18,6 +19,7 @@ function renderCartContents() {
       button.addEventListener("click", () => {
         const matchId = button.id.replace("inc-", "");
         incrementCartItemQuantity(matchId);
+        updateCartCount();
         renderCartContents();
       })
     );
@@ -25,6 +27,7 @@ function renderCartContents() {
       button.addEventListener("click", () => {
         const matchId = button.id.replace("dec-", "");
         decrementCartItemQuantity(matchId);
+        updateCartCount();
         renderCartContents();
       })
     );
@@ -59,3 +62,4 @@ function cartItemTemplate(item) {
 }
 
 renderCartContents();
+updateCartCount();
