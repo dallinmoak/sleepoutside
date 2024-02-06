@@ -10,9 +10,8 @@ export default async function renderProductDetails(productId, selector) {
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
   document.getElementById("addToCart").addEventListener("click", () => {
-    addToCart(product), updateCartCount();
+    addToCart(product);
   });
-  updateCartCount();
 }
 
 export function addToCart(newProduct) {
@@ -63,16 +62,17 @@ function checkCartForItem(newProduct) {
   }
 }
 
-export function updateCartCount() {
+export function getCartCount() {
   const cartItems = getLocalStorage("so-cart");
   let cartCount = 0;
   if (cartItems) {
     cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   }
-  const cartCountElement = document.getElementById("cartCount");
-  if (cartCountElement) {
-    cartCountElement.textContent = cartCount;
-  }
+  return cartCount;
+  // const cartCountElement = document.getElementById("cartCount");
+  // if (cartCountElement) {
+  //   cartCountElement.textContent = cartCount;
+  // }
 }
 
 function productDetailsTemplate(newProduct) {

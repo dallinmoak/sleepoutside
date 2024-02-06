@@ -1,9 +1,15 @@
 import {
   decrementCartItemQuantity,
   incrementCartItemQuantity,
-  updateCartCount,
 } from "./productDetails.mjs";
 import { getLocalStorage } from "./utils.mjs";
+import MainHeader from "./components/MainHeader.svelte";
+import MainFooter from "./components/MainFooter.svelte";
+import { renderFooterHeader } from "./utils.mjs";
+import { cartCount } from "./stores.mjs";
+
+renderFooterHeader("#main-header", MainHeader);
+renderFooterHeader("#main-footer", MainFooter);
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
@@ -19,7 +25,6 @@ function renderCartContents() {
       button.addEventListener("click", () => {
         const matchId = button.id.replace("inc-", "");
         incrementCartItemQuantity(matchId);
-        updateCartCount();
         renderCartContents();
       })
     );
@@ -27,7 +32,6 @@ function renderCartContents() {
       button.addEventListener("click", () => {
         const matchId = button.id.replace("dec-", "");
         decrementCartItemQuantity(matchId);
-        updateCartCount();
         renderCartContents();
       })
     );
@@ -62,4 +66,3 @@ function cartItemTemplate(item) {
 }
 
 renderCartContents();
-updateCartCount();
