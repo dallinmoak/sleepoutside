@@ -1,5 +1,6 @@
 import { addItemToStorageArray, getLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
+import { cartCount } from "./stores.mjs";
 
 const myProduct = new ProductData("tents");
 
@@ -10,46 +11,35 @@ export default async function renderProductDetails(productId, selector) {
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
   document.getElementById("addToCart").addEventListener("click", () => {
-    addToCart(product), updateCartCount();
+    addToCart(product);
   });
-  updateCartCount();
 }
 
 export function addToCart(newProduct) {
   const matchId = checkCartForItem(newProduct);
   if (matchId == -1) {
     addItemToStorageArray("so-cart", { ...newProduct, quantity: 1 });
+    cartCount.set(getCartCount());
   } else {
-    incrementCartItemQuantity(matchId);
+    adjustCartItemQuantity(matchId, 1);
   }
 }
 
-export function incrementCartItemQuantity(matchId, amount = 1) {
-  const cartItems = getLocalStorage("so-cart");
-  const newCartItems = cartItems.map((item) => {
-    if (item.Id === matchId) {
-      item.quantity += amount;
-    }
-    return item;
-  });
-  localStorage.setItem("so-cart", JSON.stringify(newCartItems));
-}
-
-export function decrementCartItemQuantity(matchId, amount = 1) {
+export function adjustCartItemQuantity(matchId, amount = 1) {
   const cartItems = getLocalStorage("so-cart");
   const newCartItems = cartItems
     .map((item) => {
       if (item.Id === matchId) {
-        if (item.quantity == 1) {
-          // if the quantity is 1, remove the item from the cart instead of having a quantity of 0
+        if (item.quantity + amount <= 0) {
           return null;
         }
-        item.quantity -= amount;
+        item.quantity += amount;
       }
       return item;
     })
     .filter((item) => item !== null);
   localStorage.setItem("so-cart", JSON.stringify(newCartItems));
+  cartCount.set(getCartCount());
 }
 
 function checkCartForItem(newProduct) {
@@ -63,16 +53,16 @@ function checkCartForItem(newProduct) {
   }
 }
 
-export function updateCartCount() {
+export function getCartCount() {
   const cartItems = getLocalStorage("so-cart");
-  let cartCount = 0;
+  let currentCartCount = 0;
   if (cartItems) {
-    cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+    currentCartCount = cartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
   }
-  const cartCountElement = document.getElementById("cartCount");
-  if (cartCountElement) {
-    cartCountElement.textContent = cartCount;
-  }
+  return currentCartCount;
 }
 
 function productDetailsTemplate(newProduct) {

@@ -16,17 +16,17 @@ export function setLocalStorage(key, data) {
 
 export function addItemToStorageArray(key, data) {
   const existingDataString = localStorage.getItem(key);
-  const existingData = existingDataString ? JSON.parse(existingDataString) : []; 
+  const existingData = existingDataString ? JSON.parse(existingDataString) : [];
 
-  existingData.push(data); 
+  existingData.push(data);
   localStorage.setItem(key, JSON.stringify(existingData));
 }
 
 export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const value = urlParams.get(param); 
-  return value; 
+  const value = urlParams.get(param);
+  return value;
 }
 
 // set a listener for both touchend and click
@@ -36,4 +36,12 @@ export function setClick(selector, callback) {
     callback();
   });
   qs(selector).addEventListener("click", callback);
+}
+
+export function renderComponent(selector, Component, props) {
+  const myComponent = new Component({
+    target: document.querySelector(selector),
+    props: props,
+  });
+  return myComponent;
 }
