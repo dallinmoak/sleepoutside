@@ -1,6 +1,6 @@
 import MainHeader from "./components/MainHeader.svelte";
 import MainFooter from "./components/MainFooter.svelte";
-import { renderFooterHeader } from "./utils.mjs";
+import { renderComponent } from "./utils.mjs";
 
-renderFooterHeader("#main-header", MainHeader);
-renderFooterHeader("#main-footer", MainFooter);
+renderComponent("#main-header", MainHeader);
+renderComponent("#main-footer", MainFooter);

@@ -1,15 +1,11 @@
-import {
-  decrementCartItemQuantity,
-  incrementCartItemQuantity,
-} from "./productDetails.mjs";
+import { adjustCartItemQuantity } from "./productDetails.mjs";
 import { getLocalStorage } from "./utils.mjs";
 import MainHeader from "./components/MainHeader.svelte";
 import MainFooter from "./components/MainFooter.svelte";
-import { renderFooterHeader } from "./utils.mjs";
-import { cartCount } from "./stores.mjs";
+import { renderComponent } from "./utils.mjs";
 
-renderFooterHeader("#main-header", MainHeader);
-renderFooterHeader("#main-footer", MainFooter);
+renderComponent("#main-header", MainHeader);
+renderComponent("#main-footer", MainFooter);
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
@@ -21,21 +17,19 @@ function renderCartContents() {
     document.querySelector("#empty-cart-message").innerHTML = "";
     const htmlItems = cartItems.map((item) => cartItemTemplate(item));
     document.querySelector(".product-list").innerHTML = htmlItems.join("");
-    document.querySelectorAll(".increment").forEach((button) =>
-      button.addEventListener("click", () => {
-        const matchId = button.id.replace("inc-", "");
-        incrementCartItemQuantity(matchId);
-        renderCartContents();
-      })
-    );
-    document.querySelectorAll(".decrement").forEach((button) =>
-      button.addEventListener("click", () => {
-        const matchId = button.id.replace("dec-", "");
-        decrementCartItemQuantity(matchId);
-        renderCartContents();
-      })
-    );
+    addButtonListeners(".increment", 1);
+    addButtonListeners(".decrement", -1);
   }
+}
+
+function addButtonListeners(selector, amount) {
+  document.querySelectorAll(selector).forEach((button) =>
+    button.addEventListener("click", () => {
+      const matchId = button.id.replace(`${selector.replace(".", "")}-`, "");
+      adjustCartItemQuantity(matchId, amount);
+      renderCartContents();
+    })
+  );
 }
 
 function cartItemTemplate(item) {
@@ -54,10 +48,10 @@ function cartItemTemplate(item) {
   <p class="cart-card__price">$${(item.FinalPrice * item.quantity).toFixed(
     2
   )}</p>
-  <button class="decrement" title="decrese quantity by 1" id="dec-${
+  <button class="decrement" title="decrese quantity by 1" id="decrement-${
     item.Id
   }">-</button>
-  <button class="increment" title="increase quantity by 1" id="inc-${
+  <button class="increment" title="increase quantity by 1" id="increment-${
     item.Id
   }">+</button>
 </li>`;

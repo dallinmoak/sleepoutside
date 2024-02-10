@@ -38,9 +38,10 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-export function renderFooterHeader(selector, Component, props) {
+export function renderComponent(selector, Component, props) {
   const myComponent = new Component({
     target: document.querySelector(selector),
     props: props,
   });
+  return myComponent;
 }
