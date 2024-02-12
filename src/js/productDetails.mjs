@@ -65,6 +65,18 @@ export function getCartCount() {
   return currentCartCount;
 }
 
+export function getTotalPrice() {
+  const cartItems = getLocalStorage("so-cart");
+  let totalPrice = 0;
+  if (cartItems) {
+    totalPrice = cartItems.reduce(
+      (total, item) => total + item.FinalPrice * item.quantity,
+      0
+    );
+  }
+  return totalPrice.toFixed(2);
+}
+
 function productDetailsTemplate(newProduct) {
   return `<h3>${newProduct.Brand.Name}</h3>
   <h2 class="divider">${newProduct.NameWithoutBrand}</h2>
