@@ -90,6 +90,12 @@ button {
   border: 0;
   font-size: var(--large-font);
   cursor: pointer;
+  border-radius: .3rem;
+}
+
+button:hover {
+  background-color: var(--dark-grey);
+  transition: background-color 0.3s;
 }
 .divider {
   border-bottom: 2px solid var(--primary-color);
@@ -105,7 +111,10 @@ button {
 
 .cart svg {
   width: 25px;
+  fill: var(--dark-grey);
+  transition: fill 0.3s;
 }
+
 .cart:hover svg {
   fill: gray;
 }
@@ -120,6 +129,11 @@ button {
   min-width: calc(var(--cart-icon-font) * 2);
   padding: .3em; 
   font-size: var(--small-font); 
+}
+
+#cart-total {
+  margin: 1rem; 
+  padding: 1rem; 
 }
 
 /* End cart icon styles */

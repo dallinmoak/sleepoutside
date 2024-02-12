@@ -1,8 +1,9 @@
-import { adjustCartItemQuantity } from "./productDetails.mjs";
+import { adjustCartItemQuantity, getTotalPrice } from "./productDetails.mjs";
 import { getLocalStorage } from "./utils.mjs";
 import MainHeader from "./components/MainHeader.svelte";
 import MainFooter from "./components/MainFooter.svelte";
 import { renderComponent } from "./utils.mjs";
+import { get } from "svelte/store";
 
 renderComponent("#main-header", MainHeader);
 renderComponent("#main-footer", MainFooter);
@@ -13,12 +14,16 @@ function renderCartContents() {
     const emptyCart = `<h3 class="empty-cart">Your Cart is Empty!</h3>`;
     document.querySelector("#empty-cart-message").innerHTML = emptyCart;
     document.querySelector(".product-list").innerHTML = "";
+    document.querySelector("#cart-total").innerHTML = "";
   } else {
     document.querySelector("#empty-cart-message").innerHTML = "";
     const htmlItems = cartItems.map((item) => cartItemTemplate(item));
     document.querySelector(".product-list").innerHTML = htmlItems.join("");
     addButtonListeners(".increment", 1);
     addButtonListeners(".decrement", -1);
+    document.querySelector(
+      "#cart-total"
+    ).innerHTML = `Total: $${getTotalPrice()}`;
   }
 }
 
