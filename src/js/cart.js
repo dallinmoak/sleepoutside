@@ -1,4 +1,8 @@
-import { adjustCartItemQuantity, getTotalPrice } from "./productDetails.mjs";
+import {
+  adjustCartItemQuantity,
+  animateCartIcon,
+  getTotalPrice,
+} from "./productDetails.mjs";
 import { getLocalStorage } from "./utils.mjs";
 import MainHeader from "./components/MainHeader.svelte";
 import MainFooter from "./components/MainFooter.svelte";
@@ -33,6 +37,7 @@ function addButtonListeners(selector, amount) {
       const matchId = button.id.replace(`${selector.replace(".", "")}-`, "");
       adjustCartItemQuantity(matchId, amount);
       renderCartContents();
+      animateCartIcon();
     })
   );
 }

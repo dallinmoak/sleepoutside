@@ -77,6 +77,13 @@ export function getTotalPrice() {
   return totalPrice.toFixed(2);
 }
 
+export function animateCartIcon() {
+  const cartIcon = document.querySelector(".cart");
+  cartIcon.classList.remove("animate");
+  void cartIcon.offsetWidth;
+  cartIcon.classList.add("animate");
+}
+
 function productDetailsTemplate(newProduct) {
   return `<h3>${newProduct.Brand.Name}</h3>
   <h2 class="divider">${newProduct.NameWithoutBrand}</h2>
