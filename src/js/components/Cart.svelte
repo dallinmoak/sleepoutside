@@ -33,3 +33,10 @@
     <span id="cart-total">Total: ${totalPrice}</span>
   </div>
 {/if}
+
+<style>
+  #cart-total {
+    margin: 1rem;
+    padding: 1rem;
+  }
+</style>

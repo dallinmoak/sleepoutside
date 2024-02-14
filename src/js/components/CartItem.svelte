@@ -37,3 +37,46 @@
     on:click={() => handlequantityClick(item.Id, 1)}>+</button
   >
 </li>
+
+<style>
+  .cart-card {
+    display: grid;
+    grid-template-columns: 25% auto 15%;
+    font-size: var(--small-font);
+    /* max-height: 120px; */
+    align-items: center;
+  }
+  .cart-card__image {
+    grid-row: 1/3;
+    grid-column: 1;
+  }
+  .cart-card p {
+    margin-top: 0;
+  }
+  .cart__name {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .cart-card__color {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  .cart-card__quantity {
+    grid-row: 1;
+    grid-column: 3;
+  }
+
+  .cart-card__price {
+    grid-row: 2;
+    grid-column: 3;
+  }
+
+  @media screen and (min-width: 500px) {
+    .cart-card {
+      font-size: inherit;
+      grid-template-columns: 150px auto 15%;
+    }
+  }
+</style>
