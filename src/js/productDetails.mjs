@@ -12,6 +12,7 @@ export default async function renderProductDetails(productId, selector) {
   el.innerHTML = productDetailsTemplate(product);
   document.getElementById("addToCart").addEventListener("click", () => {
     addToCart(product);
+    animateCartIcon();
   });
 }
 
@@ -75,6 +76,13 @@ export function getTotalPrice() {
     );
   }
   return totalPrice.toFixed(2);
+}
+
+export function animateCartIcon() {
+  const cartIcon = document.querySelector(".cart");
+  cartIcon.classList.remove("animate");
+  void cartIcon.offsetWidth;
+  cartIcon.classList.add("animate");
 }
 
 function productDetailsTemplate(newProduct) {
