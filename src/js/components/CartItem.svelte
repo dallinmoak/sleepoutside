@@ -1,14 +1,10 @@
 <script>
-  import {
-    adjustCartItemQuantity,
-    animateCartIcon,
-  } from "../productDetails.mjs";
+  import { adjustCartItemQuantity } from "../productDetails.mjs";
   export let item;
   export let updateCartItems;
   const handlequantityClick = (id, amount) => {
     adjustCartItemQuantity(id, amount);
     updateCartItems({ ...item, quantity: item.quantity + amount });
-    animateCartIcon();
   };
 </script>
 

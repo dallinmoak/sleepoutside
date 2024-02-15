@@ -12,7 +12,6 @@ export default async function renderProductDetails(productId, selector) {
   el.innerHTML = productDetailsTemplate(product);
   document.getElementById("addToCart").addEventListener("click", () => {
     addToCart(product);
-    animateCartIcon();
   });
 }
 
@@ -21,6 +20,7 @@ export function addToCart(newProduct) {
   if (matchId == -1) {
     addItemToStorageArray("so-cart", { ...newProduct, quantity: 1 });
     cartCount.set(getCartCount());
+    animateCartIcon();
   } else {
     adjustCartItemQuantity(matchId, 1);
   }
@@ -41,6 +41,7 @@ export function adjustCartItemQuantity(matchId, amount = 1) {
     .filter((item) => item !== null);
   localStorage.setItem("so-cart", JSON.stringify(newCartItems));
   cartCount.set(getCartCount());
+  animateCartIcon();
 }
 
 function checkCartForItem(newProduct) {
