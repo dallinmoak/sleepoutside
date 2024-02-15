@@ -90,7 +90,7 @@ button {
   border: 0;
   font-size: var(--large-font);
   cursor: pointer;
-  border-radius: .3rem;
+  border-radius: 0.3rem;
 }
 
 button:hover {
@@ -122,28 +122,29 @@ button:hover {
 .cart-count {
   position: absolute;
   top: 5px;
-  right: -4px; 
+  right: -4px;
   background-color: var(--secondary-color);
   color: white;
   border-radius: var(--small-font);
   min-width: calc(var(--cart-icon-font) * 2);
-  padding: .3em; 
-  font-size: var(--small-font); 
+  padding: 0.3em;
+  font-size: var(--small-font);
 }
 
 @keyframes bounce {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .animate {
   animation: bounce 0.5s;
-}
-
-#cart-total {
-  margin: 1rem; 
-  padding: 1rem; 
 }
 
 /* End cart icon styles */
@@ -202,42 +203,6 @@ button:hover {
   width: 100%;
 }
 
-/* Start cart list card styles */
-.cart-card {
-  display: grid;
-  grid-template-columns: 25% auto 15%;
-  font-size: var(--small-font);
-  /* max-height: 120px; */
-  align-items: center;
-}
-
-.cart-card__image {
-  grid-row: 1/3;
-  grid-column: 1;
-}
-.cart-card p {
-  margin-top: 0;
-}
-.cart-card .card__name {
-  grid-row: 1;
-  grid-column: 2;
-}
-
-.cart-card__color {
-  grid-row: 2;
-  grid-column: 2;
-}
-
-.cart-card__quantity {
-  grid-row: 1;
-  grid-column: 3;
-}
-
-.cart-card__price {
-  grid-row: 2;
-  grid-column: 3;
-}
-
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
@@ -245,10 +210,6 @@ button:hover {
   }
   .mission {
     font-size: 1.2em;
-  }
-  .cart-card {
-    font-size: inherit;
-    grid-template-columns: 150px auto 15%;
   }
 }
 
