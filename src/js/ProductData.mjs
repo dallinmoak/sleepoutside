@@ -21,9 +21,8 @@ export default class ProductData {
     } else return "No category provided";
   }
   async getProductData(id) {
-    //TODO: just fetch the product by id path = /products/{id}/
-    const data = await this.getCategoryData();
-    const products = data;
-    return products.find((item) => item.Id === id);
+    const res = await fetch(`${this.baseUrl}product/${id}`);
+    const data = await convertToJson(res);
+    return data.Result;
   }
 }

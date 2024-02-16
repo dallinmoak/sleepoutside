@@ -4,16 +4,11 @@ import { cartCount } from "./stores.mjs";
 
 let product = {};
 
-export default async function renderProductDetails(
-  productId,
-  selector,
-  category
-) {
-  const myProduct = new ProductData(category);
+export default async function renderProductDetails(productId, selector) {
+  const myProduct = new ProductData();
   product = await myProduct.getProductData(productId);
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
-  console.log(product);
   document.getElementById("addToCart").addEventListener("click", () => {
     addToCart(product);
   });

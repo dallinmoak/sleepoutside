@@ -13,9 +13,7 @@ getCategoryData
   {:then productList}
     {#each productList as product}
       <li class="product-card">
-        <a
-          href="/product_pages/index.html?product={product.Id}&category={category}"
-        >
+        <a href="/product_pages/index.html?product={product.Id}">
           <img
             src={product.Images.PrimaryMedium}
             alt={product.NameWithoutBrand}

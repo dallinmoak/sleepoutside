@@ -5,8 +5,7 @@ import MainHeader from "./components/MainHeader.svelte";
 import MainFooter from "./components/MainFooter.svelte";
 
 const productId = getParam("product");
-const category = getParam("category");
-renderProductDetails(productId, ".product-detail", category);
+renderProductDetails(productId, ".product-detail");
 
 renderComponent("#main-header", MainHeader);
 renderComponent("#main-footer", MainFooter);

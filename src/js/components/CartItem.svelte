@@ -10,12 +10,12 @@
 
 <li class="cart-card divider">
   <a
-    href={`/product_pages/index.html?product=${item.Id}&category=${item.Category}`}
+    href={`/product_pages/index.html?product=${item.Id}`}
     class="cart-card__image"
   >
     <img src={item.Images.PrimaryLarge} alt={item.Name} />
   </a>
-  <a href={`/product_pages/index.html?product=${item.Id}&category=${item.Category}`}>
+  <a href={`/product_pages/index.html?product=${item.Id}`}>
     <h2 class="cart__name">{item.Name}</h2>
   </a>
   <p class="cart-card__color">{item.Colors[0].ColorName}</p>
