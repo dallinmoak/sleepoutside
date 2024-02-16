@@ -2,15 +2,16 @@
   import ProductData from "../ProductData.mjs";
   export let category;
   const myProductData = new ProductData(category);
-  let productListPromise = myProductData.getData();
+  let productListPromise = myProductData.getCategoryData();
 </script>
 
+getCategoryData
 <h2>Top Products: {category}</h2>
 <ul class="product-list">
   {#await productListPromise}
     loading.....
   {:then productList}
-    {#each productList.Result as product}
+    {#each productList as product}
       <li class="product-card">
         <a
           href="/product_pages/index.html?product={product.Id}&category={category}"

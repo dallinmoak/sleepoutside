@@ -11,14 +11,19 @@ export default class ProductData {
     this.category = category;
     this.baseUrl = import.meta.env.VITE_SERVER_URL;
   }
-  async getData() {
-    const res = await fetch(`${this.baseUrl}products/search/${this.category}`);
-    const data = await convertToJson(res);
-    return data;
+  async getCategoryData() {
+    if (this.category) {
+      const res = await fetch(
+        `${this.baseUrl}products/search/${this.category}`
+      );
+      const data = await convertToJson(res);
+      return data.Result;
+    } else return "No category provided";
   }
-  async findProductById(id) {
-    const data = await this.getData();
-    const products = data.Result;
+  async getProductData(id) {
+    //TODO: just fetch the product by id path = /products/{id}/
+    const data = await this.getCategoryData();
+    const products = data;
     return products.find((item) => item.Id === id);
   }
 }

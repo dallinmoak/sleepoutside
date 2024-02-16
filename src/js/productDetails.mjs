@@ -10,9 +10,10 @@ export default async function renderProductDetails(
   category
 ) {
   const myProduct = new ProductData(category);
-  product = await myProduct.findProductById(productId);
+  product = await myProduct.getProductData(productId);
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
+  console.log(product);
   document.getElementById("addToCart").addEventListener("click", () => {
     addToCart(product);
   });
