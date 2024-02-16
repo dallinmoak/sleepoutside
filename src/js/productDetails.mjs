@@ -2,11 +2,14 @@ import { addItemToStorageArray, getLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import { cartCount } from "./stores.mjs";
 
-const myProduct = new ProductData("tents");
-
 let product = {};
 
-export default async function renderProductDetails(productId, selector) {
+export default async function renderProductDetails(
+  productId,
+  selector,
+  category
+) {
+  const myProduct = new ProductData(category);
   product = await myProduct.findProductById(productId);
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
