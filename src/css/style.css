@@ -170,6 +170,27 @@ button:hover {
   text-decoration: none;
   color: var(--dark-grey);
 }
+
+.product-categories {
+  display: flex;
+  justify-content: center;
+  padding: 0.5em;
+}
+.product-categories a {
+  text-decoration: none;
+  color: var(--dark-grey);
+  padding: 0.5em;
+  border: 1px solid var(--light-grey);
+  margin: 0.5em;
+  border-radius: 0.3em;
+  text-align: center;
+  width: 100%; 
+  font-weight: bold; 
+}
+.product-categories a:hover {
+  background-color: var(--light-grey);
+  transition: background-color 0.2s;
+}
 /* Styles for product lists */
 .product-card {
   flex: 1 1 45%;
