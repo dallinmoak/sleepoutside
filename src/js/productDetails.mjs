@@ -2,12 +2,11 @@ import { addItemToStorageArray, getLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import { cartCount } from "./stores.mjs";
 
-const myProduct = new ProductData("tents");
-
 let product = {};
 
 export default async function renderProductDetails(productId, selector) {
-  product = await myProduct.findProductById(productId);
+  const myProduct = new ProductData();
+  product = await myProduct.getProductData(productId);
   const el = document.querySelector(selector);
   el.innerHTML = productDetailsTemplate(product);
   document.getElementById("addToCart").addEventListener("click", () => {
@@ -91,7 +90,7 @@ function productDetailsTemplate(newProduct) {
   <h2 class="divider">${newProduct.NameWithoutBrand}</h2>
   <img
     class="divider"
-    src="${newProduct.Image}"
+    src="${newProduct.Images.PrimaryExtraLarge}"
     alt="${newProduct.Name}"
   />
   <p class="product-card__price">$${newProduct.FinalPrice}</p>
