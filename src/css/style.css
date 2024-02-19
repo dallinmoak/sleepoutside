@@ -7,6 +7,8 @@
   --tertiary-color: #a4b8c4;
   --light-grey: #d0d0d0;
   --dark-grey: #303030;
+  --alert: #8b1043;
+  --alert-dark: #440821;
 
   /* sizes */
   --font-base: 18px;
@@ -81,7 +83,7 @@ header {
   color: var(--tertiary-color);
 }
 
-button {
+button.btn-default {
   padding: 0.5em 2em;
   background-color: var(--secondary-color);
   color: white;
@@ -93,7 +95,7 @@ button {
   border-radius: 0.3rem;
 }
 
-button:hover {
+button.btn-default:hover {
   background-color: var(--dark-grey);
   transition: background-color 0.3s;
 }
@@ -184,8 +186,8 @@ button:hover {
   margin: 0.5em;
   border-radius: 0.3em;
   text-align: center;
-  width: 100%; 
-  font-weight: bold; 
+  width: 100%;
+  font-weight: bold;
 }
 .product-categories a:hover {
   background-color: var(--light-grey);
