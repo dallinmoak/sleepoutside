@@ -31,6 +31,36 @@
       <!-- <text x="0" y="115" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by Natalia Woodroffe</text>
             <text x="0" y="120" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text> -->
     </svg>
-    <sup class="cart-count">{$cartCount}</sup>
+    <sup class="cart-count" id="cart-count">{$cartCount}</sup>
   </a>
 </div>
+
+<style>
+  .cart {
+    padding-top: 1em;
+    position: relative;
+    text-align: center;
+  }
+
+  .cart svg {
+    width: 25px;
+    fill: var(--dark-grey);
+    transition: fill 0.3s;
+  }
+
+  .cart:hover svg {
+    fill: gray;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: 5px;
+    right: -4px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: var(--small-font);
+    min-width: calc(var(--cart-icon-font) * 2);
+    padding: 0.3em;
+    font-size: var(--small-font);
+  }
+</style>

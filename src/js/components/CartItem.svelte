@@ -1,6 +1,6 @@
 <script>
   import { adjustCartItemQuantity } from "../productDetails.mjs";
-  import Buttton from "./ui/buttton.svelte";
+  import Buttton from "./ui/Button.svelte";
   export let item;
   export let updateCartItems;
   const handlequantityClick = (id, amount) => {

@@ -5,7 +5,6 @@
   let productListPromise = myProductData.getCategoryData();
 </script>
 
-getCategoryData
 <h2>Top Products: {category}</h2>
 <ul class="product-list">
   {#await productListPromise}
@@ -28,3 +27,37 @@ getCategoryData
     error: {error}
   {/await}
 </ul>
+
+<style>
+  .product-list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0;
+  }
+  .product-list a {
+    text-decoration: none;
+    color: var(--dark-grey);
+  }
+  .product-card {
+    flex: 1 1 45%;
+    margin: 0.25em;
+    padding: 0.5em;
+    border: 1px solid var(--light-grey);
+    max-width: 250px;
+  }
+  .product-card h2,
+  .product-card h3,
+  .product-card p {
+    margin: 0.5em 0;
+  }
+
+  .card__brand {
+    font-size: var(--small-font);
+  }
+
+  .card__name {
+    font-size: 1em;
+  }
+</style>

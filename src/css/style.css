@@ -83,56 +83,12 @@ header {
   color: var(--tertiary-color);
 }
 
-button.btn-default {
-  padding: 0.5em 2em;
-  background-color: var(--secondary-color);
-  color: white;
-  margin: auto;
-  display: block;
-  border: 0;
-  font-size: var(--large-font);
-  cursor: pointer;
-  border-radius: 0.3rem;
-}
-
-button.btn-default:hover {
-  background-color: var(--dark-grey);
-  transition: background-color 0.3s;
-}
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
 /* End utility classes */
 
 /* Cart icon styles */
-.cart {
-  padding-top: 1em;
-  position: relative;
-  text-align: center;
-}
-
-.cart svg {
-  width: 25px;
-  fill: var(--dark-grey);
-  transition: fill 0.3s;
-}
-
-.cart:hover svg {
-  fill: gray;
-}
-
-.cart-count {
-  position: absolute;
-  top: 5px;
-  right: -4px;
-  background-color: var(--secondary-color);
-  color: white;
-  border-radius: var(--small-font);
-  min-width: calc(var(--cart-icon-font) * 2);
-  padding: 0.3em;
-  font-size: var(--small-font);
-}
-
 @keyframes bounce {
   0% {
     transform: scale(1);
@@ -148,7 +104,6 @@ button.btn-default:hover {
 .animate {
   animation: bounce 0.5s;
 }
-
 /* End cart icon styles */
 
 .mission {
@@ -161,69 +116,11 @@ button.btn-default:hover {
 .products {
   padding: 0.5em;
 }
-.product-list {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  list-style-type: none;
-  padding: 0;
-}
-.product-list a {
-  text-decoration: none;
-  color: var(--dark-grey);
-}
-
-.product-categories {
-  display: flex;
-  justify-content: center;
-  padding: 0.5em;
-}
-.product-categories a {
-  text-decoration: none;
-  color: var(--dark-grey);
-  padding: 0.5em;
-  border: 1px solid var(--light-grey);
-  margin: 0.5em;
-  border-radius: 0.3em;
-  text-align: center;
-  width: 100%;
-  font-weight: bold;
-}
-.product-categories a:hover {
-  background-color: var(--light-grey);
-  transition: background-color 0.2s;
-}
-/* Styles for product lists */
-.product-card {
-  flex: 1 1 45%;
-  margin: 0.25em;
-  padding: 0.5em;
-  border: 1px solid var(--light-grey);
-  max-width: 250px;
-}
-.product-card h2,
-.product-card h3,
-.product-card p {
-  margin: 0.5em 0;
-}
-
-.card__brand {
-  font-size: var(--small-font);
-}
-
-.card__name {
-  font-size: 1em;
-}
-/* End product list card */
 
 .product-detail {
   padding: 1em;
   max-width: 500px;
   margin: auto;
-}
-
-.product-detail img {
-  width: 100%;
 }
 
 @media screen and (min-width: 500px) {
