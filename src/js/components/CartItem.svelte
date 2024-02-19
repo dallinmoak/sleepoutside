@@ -69,6 +69,10 @@
   .cart-card p {
     margin-top: 0;
   }
+  a:has(> .cart__name) {
+    text-decoration: none;
+    color: var(--dark-grey);
+  }
   .cart__name {
     grid-row: 1;
     grid-column: 2;
