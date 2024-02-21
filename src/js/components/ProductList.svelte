@@ -1,6 +1,7 @@
 <script>
   import ProductData from "../ProductData.mjs";
-  export let category;
+  import { getParam } from "../utils.mjs";
+  const category = getParam("category");
   const myProductData = new ProductData(category);
   let productListPromise = myProductData.getCategoryData();
 </script>
@@ -30,9 +31,10 @@
 
 <style>
   .product-list {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
+    width: 70vw;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     list-style-type: none;
     padding: 0;
   }
@@ -46,6 +48,7 @@
     padding: 0.5em;
     border: 1px solid var(--light-grey);
     max-width: 250px;
+    width: 100%;
   }
   .product-card h2,
   .product-card h3,

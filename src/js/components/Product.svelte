@@ -1,6 +1,6 @@
 <script>
   import ProductData from "../ProductData.mjs";
-  import { addItemToStorageArray } from "../utils.mjs";
+  import { addItemToStorageArray, getParam } from "../utils.mjs";
   import {
     animateCartIcon,
     getCartCount,
@@ -10,7 +10,7 @@
   import { cartCount } from "../stores.mjs";
   import Button from "./ui/Button.svelte";
 
-  export let productId;
+  const productId = getParam("product");
   const myProduct = new ProductData();
   let product = myProduct.getProductData(productId);
 

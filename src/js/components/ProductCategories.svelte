@@ -42,6 +42,7 @@
 <style>
   .product-categories {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     padding: 0.5em;
   }
@@ -53,11 +54,18 @@
     margin: 0.5em;
     border-radius: 0.3em;
     text-align: center;
-    width: 100%;
+    width: 45%;
     font-weight: bold;
   }
   .product-categories a:hover {
     background-color: var(--light-grey);
     transition: background-color 0.2s;
+  }
+
+  @media (min-width: 500px) {
+    .product-categories a {
+      flex-wrap: nowrap;
+      width: 21%;
+    }
   }
 </style>

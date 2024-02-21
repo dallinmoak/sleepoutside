@@ -39,4 +39,8 @@
     margin: 1rem;
     padding: 1rem;
   }
+  ul {
+    list-style-type: none;
+    padding: 0 0.5em;
+  }
 </style>

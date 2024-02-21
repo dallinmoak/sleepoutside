@@ -1,6 +1,5 @@
-import MainHeader from "./components/MainHeader.svelte";
-import MainFooter from "./components/MainFooter.svelte";
 import { renderComponent } from "./utils.mjs";
+import CheckoutPage from "./components/pages/CheckoutPage.svelte";
+import PageLayout from "./components/PageLayout.svelte";
 
-renderComponent("#main-header", MainHeader);
-renderComponent("#main-footer", MainFooter);
+renderComponent("body", PageLayout, { PageComponent: CheckoutPage });
