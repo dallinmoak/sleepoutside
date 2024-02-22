@@ -2,6 +2,7 @@
   import { getLocalStorage } from "../utils.mjs";
   import { getTotalPrice } from "../productDetails.mjs";
   import CartItem from "./CartItem.svelte";
+  import Button from "./ui/Button.svelte";
 
   let cartItems = getLocalStorage("so-cart") || [];
   let totalPrice = getTotalPrice();
@@ -32,6 +33,7 @@
   <div class="cart-footer hide">
     <span id="cart-total">Total: ${totalPrice}</span>
   </div>
+  <a href="/checkout/index.html"><Button>Check Out</Button></a>
 {/if}
 
 <style>
