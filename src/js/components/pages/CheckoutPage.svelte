@@ -1,49 +1,187 @@
 <script>
-    import { cartCount as count} from "../../stores.mjs";
-    import { getTotalPrice } from "../../productDetails.mjs";
-    
-    let subtotal = getTotalPrice();
-    console.log(count)
-    $: shipping = 10 + $count * 2;
-    const taxRate=0.06;
-    $: tax = subtotal*taxRate;
-    $: orderTotal = parseFloat(subtotal) + parseFloat(shipping) + parseFloat(tax);
+  import { cartCount as count } from "../../stores.mjs";
+  import { getTotalPrice } from "../../productDetails.mjs";
+  import Button from "../ui/Button.svelte";
+  import FormFieldGroup from "../ui/FormFieldGroup.svelte";
+  import { getLocalStorage } from "../../utils.mjs";
+  import ProductData from "../../ProductData.mjs";
+  import { beforeUpdate } from "svelte";
+
+  let subtotal = getTotalPrice();
+  $: shipping = 10 + $count * 2;
+  const taxRate = 0.06;
+  const tax = subtotal * taxRate;
+  $: orderTotal = parseFloat(subtotal) + parseFloat(shipping) + parseFloat(tax);
+  let orderState = "pending";
+  let orderResData = {};
+
+  const handleSubmit = async (e) => {
+    let order = {};
+    order.orderDate = new Date().toISOString();
+    const data = Object.fromEntries(new FormData(e.target));
+    order = { ...order, ...data };
+    order.items = getLocalStorage("so-cart").map((item) => {
+      return {
+        id: item.Id,
+        quantity: item.quantity,
+        name: item.Name,
+        price: item.FinalPrice,
+      };
+    });
+    order.orderTotal = orderTotal;
+    order.shipping = shipping;
+    order.tax = tax;
+    const checkoutConnection = new ProductData();
+    const res = await checkoutConnection.postOrder(order);
+    // window.location = "/";
+    // history.pushState({}, "", "/");
+    orderState = res.ok ? "success" : "failed";
+    orderResData = await res.json();
+    if (res.ok) {
+      //TODO: clear cart
+    }
+  };
+
+  //NOTE: fieldGroups depends on calculated values, and so has to be set in beforeUpdate (setting values normally results in calculated values being undefined)
+  let fieldGroups = [];
+  beforeUpdate(() => {
+    fieldGroups = [
+      {
+        legend: "Shipping",
+        fields: [
+          {
+            id: "fname",
+            label: "First Name",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "lname",
+            label: "Last Name",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "street",
+            label: "Street",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "city",
+            label: "City",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "state",
+            label: "State",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "zip",
+            label: "Zip",
+            type: "number",
+            readOnly: false,
+            value: null,
+          },
+        ],
+      },
+      {
+        legend: "Payment",
+        fields: [
+          {
+            id: "cardNumber",
+            label: "Card Number",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "expiration",
+            label: "Expiration Date",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+          {
+            id: "code",
+            label: "Security Code",
+            type: "text",
+            readOnly: false,
+            value: null,
+          },
+        ],
+      },
+      {
+        legend: "Order Summary",
+        fields: [
+          {
+            id: "subtotal",
+            label: `Item Subtotal(${$count}):`,
+            type: "number",
+            readOnly: true,
+            value: `$${subtotal}`,
+          },
+          {
+            id: "shipping",
+            label: "Shipping Estimate:",
+            type: "number",
+            readOnly: true,
+            value: `$${shipping}`,
+          },
+          {
+            id: "tax",
+            label: "Tax:",
+            type: "number",
+            readOnly: true,
+            value: `$${tax}`,
+          },
+          {
+            id: "orderTotal",
+            label: "Order Total:",
+            type: "number",
+            readOnly: true,
+            value: `$${orderTotal}`,
+          },
+        ],
+      },
+    ];
+  });
+
+  let CheckoutHeadingMap = {
+    pending: "Review & Place your Order",
+    success: "Order Placed 👍",
+    failed: "Order Failed 👎",
+  };
+  $: checkoutHeading = CheckoutHeadingMap[orderState];
 </script>
 
-<h2>Review & Place your Order</h2>
-<form>
-<fieldset>
-<lEgend>Shipping</lEgend>
-    <label for="fname">First Name</label>
-  <input type="text" name="fname" />
-  <label for="lname">Last Name</label>
-  <input type="text" name="lname" />
-  <label for="street">Street</label>
-  <input type="text" name="street" />
-  <label for="city">City</label>
-  <input type="text" name="city" />
-  <label for="zip">Zip</label>
-  <input type="text" name="zip" />
-</fieldset>
-<fieldset>
-<legend>Payment</legend>
-  <label for="cardNumber">Card Number</label>
-  <input type="text" name="cardNumber" />
-  <label for="expiration">Expiration Date</label>
-  <input type="text" name="expiration" />
-  <label for="code">Security Code</label>
-  <input type="text" name="code" />
-</fieldset>
-<fieldset>
-    <legend>Order Summary</legend>
-    <span>Item Subtotal({$count}):</span>
-    <span>{subtotal}</span>
-    <span>Shipping Estimate</span>
-    <span>{shipping}</span>
-    <span>Tax</span>
-    <span>{tax}</span>
-    <span>Order Total</span>
-    <span>{orderTotal}</span>
-
-</fieldset>
-</form>
+<h2>{checkoutHeading}</h2>
+{#if orderState != "sucess"}
+  <form on:submit|preventDefault={handleSubmit}>
+    {#each fieldGroups as group}
+      <FormFieldGroup fields={group.fields} legend={group.legend} />
+    {/each}
+    <Button type="submit" title="Place Order"
+      >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
+    >
+  </form>
+{/if}
+{#if orderState === "success"}
+  <p>Thank you for your order.</p>
+  <p>Your order number is: {orderResData.orderId}</p>
+{/if}
+{#if orderState === "failed"}
+  <p>Sorry, there was a problem placing your order.</p>
+  <p>the payment server said: <code>{JSON.stringify(orderResData)}</code></p>
+{/if}
+{#if orderState === "success"}
+  <a class="button" href="/"><Button>Back to Browsing</Button></a>
+{/if}

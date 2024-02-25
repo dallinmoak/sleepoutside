@@ -33,7 +33,7 @@
   <div class="cart-footer hide">
     <span id="cart-total">Total: ${totalPrice}</span>
   </div>
-  <a href="/checkout/index.html"><Button>Check Out</Button></a>
+  <a class="button" href="/checkout/index.html"><Button>Check Out</Button></a>
 {/if}
 
 <style>
