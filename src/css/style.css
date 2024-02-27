@@ -73,3 +73,7 @@ img {
   animation: bounce 0.5s;
 }
 /* End cart icon styles */
+
+a.button {
+  text-decoration: none;
+}

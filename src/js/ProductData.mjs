@@ -25,4 +25,20 @@ export default class ProductData {
     const data = await convertToJson(res);
     return data.Result;
   }
+
+  async postOrder(order) {
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      };
+      const res = await fetch(`${this.baseUrl}checkout`, options);
+      return res;
+    } catch (e) {
+      return { Error: e };
+    }
+  }
 }
