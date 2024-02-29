@@ -6,6 +6,7 @@
   import { getLocalStorage } from "../../utils.mjs";
   import ProductData from "../../ProductData.mjs";
   import { beforeUpdate } from "svelte";
+  import AlertMessage from "../AlertMessage.svelte";
 
   let subtotal = getTotalPrice();
   $: shipping = 10 + $count * 2;
@@ -55,6 +56,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "lname",
@@ -62,6 +64,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "street",
@@ -69,6 +72,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "city",
@@ -76,6 +80,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "state",
@@ -83,6 +88,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "zip",
@@ -90,6 +96,7 @@
             type: "number",
             readOnly: false,
             value: null,
+            required: true,
           },
         ],
       },
@@ -102,6 +109,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "expiration",
@@ -109,6 +117,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "code",
@@ -116,6 +125,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
         ],
       },
@@ -154,7 +164,7 @@
       },
     ];
   });
-
+  
   let CheckoutHeadingMap = {
     pending: "Review & Place your Order",
     success: "Order Placed 👍",
@@ -164,9 +174,14 @@
 </script>
 
 <h2>{checkoutHeading}</h2>
-{#if orderState != "sucess"}
-  <form on:submit|preventDefault={handleSubmit}>
-    {#each fieldGroups as group}
+{#if orderState == "failed"} 
+{#each Object.keys(orderResData) as alert}
+  <AlertMessage message={`Problem w/ ${alert}: ${orderResData[alert]}`}></AlertMessage>
+{/each}
+{/if}
+{#if orderState != "success"}
+<form on:submit|preventDefault={handleSubmit}>
+  {#each fieldGroups as group}
       <FormFieldGroup fields={group.fields} legend={group.legend} />
     {/each}
     <Button type="submit" title="Place Order"
@@ -180,8 +195,8 @@
 {/if}
 {#if orderState === "failed"}
   <p>Sorry, there was a problem placing your order.</p>
-  <p>the payment server said: <code>{JSON.stringify(orderResData)}</code></p>
 {/if}
 {#if orderState === "success"}
   <a class="button" href="/"><Button>Back to Browsing</Button></a>
 {/if}
+

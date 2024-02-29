@@ -11,7 +11,12 @@
       {#if field.readOnly}
         <span id={field.id} readonly>{field.value}</span>
       {:else}
-        <input type={field.type} name={field.id} id={field.id} />
+        <input
+          type={field.type}
+          name={field.id}
+          id={field.id}
+          required={field.required}
+        />
       {/if}
     </div>
   {/each}
