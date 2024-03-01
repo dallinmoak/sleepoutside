@@ -203,7 +203,7 @@
 <style>
   h2 {
     color: white;
-    background-color: var(--tertiary-color);
+    background-color: var(--secondary-color);
     padding: 0.5em;
     border-radius: 0.2em;
   }
