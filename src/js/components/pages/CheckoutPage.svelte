@@ -164,7 +164,7 @@
       },
     ];
   });
-  
+
   let CheckoutHeadingMap = {
     pending: "Review & Place your Order",
     success: "Order Placed 👍",
@@ -174,14 +174,14 @@
 </script>
 
 <h2>{checkoutHeading}</h2>
-{#if orderState == "failed"} 
-{#each Object.keys(orderResData) as alert}
-  <AlertMessage message={`Problem w/ ${alert}: ${orderResData[alert]}`}></AlertMessage>
-{/each}
+{#if orderState == "failed"}
+  {#each Object.keys(orderResData) as alert}
+    <AlertMessage message={`${orderResData[alert]}`}></AlertMessage>
+  {/each}
 {/if}
 {#if orderState != "success"}
-<form on:submit|preventDefault={handleSubmit}>
-  {#each fieldGroups as group}
+  <form on:submit|preventDefault={handleSubmit}>
+    {#each fieldGroups as group}
       <FormFieldGroup fields={group.fields} legend={group.legend} />
     {/each}
     <Button type="submit" title="Place Order"
@@ -200,3 +200,11 @@
   <a class="button" href="/"><Button>Back to Browsing</Button></a>
 {/if}
 
+<style>
+  h2 {
+    color: white;
+    background-color: var(--tertiary-color);
+    padding: 0.5em;
+    border-radius: 0.2em;
+  }
+</style>

@@ -1,7 +1,30 @@
-<script> 
-export let message; 
+<script>
+  export let message;
+  function handleClick(e) {
+    document.body.removeChild(this.parentElement);
+  }
 </script>
 
-<p> 
-  {message}
-</p>
+<div class="alert">
+  <p>{message}</p>
+  <span on:click={handleClick}>X</span>
+</div>
+
+<style>
+  .alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em;
+    background-color: var(--primary-color);
+    border: 1px solid darkorange;
+    width: 20em;
+  }
+  .alert > p {
+    margin: 0;
+  }
+  .alert > span {
+    cursor: pointer;
+    margin-left: 1em;
+  }
+</style>
