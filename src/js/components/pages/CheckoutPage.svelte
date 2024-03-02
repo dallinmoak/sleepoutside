@@ -34,8 +34,6 @@
     order.tax = tax;
     const checkoutConnection = new ProductData();
     const res = await checkoutConnection.postOrder(order);
-    // window.location = "/";
-    // history.pushState({}, "", "/");
     orderState = res.ok ? "success" : "failed";
     orderResData = await res.json();
     if (res.ok) {
@@ -173,38 +171,46 @@
   $: checkoutHeading = CheckoutHeadingMap[orderState];
 </script>
 
-<h2>{checkoutHeading}</h2>
-{#if orderState == "failed"}
-  {#each Object.keys(orderResData) as alert}
-    <AlertMessage message={`${orderResData[alert]}`}></AlertMessage>
-  {/each}
-{/if}
-{#if orderState != "success"}
-  <form on:submit|preventDefault={handleSubmit}>
-    {#each fieldGroups as group}
-      <FormFieldGroup fields={group.fields} legend={group.legend} />
+<div class="checkout-wrapper">
+  <h2>{checkoutHeading}</h2>
+  {#if orderState == "failed"}
+    {#each Object.keys(orderResData) as alert}
+      <AlertMessage message={`${orderResData[alert]}`}></AlertMessage>
     {/each}
-    <Button type="submit" title="Place Order"
-      >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
-    >
-  </form>
-{/if}
-{#if orderState === "success"}
-  <p>Thank you for your order.</p>
-  <p>Your order number is: {orderResData.orderId}</p>
-{/if}
-{#if orderState === "failed"}
-  <p>Sorry, there was a problem placing your order.</p>
-{/if}
-{#if orderState === "success"}
-  <a class="button" href="/"><Button>Back to Browsing</Button></a>
-{/if}
+  {/if}
+  {#if orderState != "success"}
+    <form on:submit|preventDefault={handleSubmit}>
+      {#each fieldGroups as group}
+        <FormFieldGroup fields={group.fields} legend={group.legend} />
+      {/each}
+      <Button type="submit" title="Place Order"
+        >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
+      >
+    </form>
+  {/if}
+  {#if orderState === "success"}
+    <p>Thank you for your order.</p>
+    <p>Your order number is: {orderResData.orderId}</p>
+  {/if}
+  {#if orderState === "failed"}
+    <p>Sorry, there was a problem placing your order.</p>
+  {/if}
+  {#if orderState === "success"}
+    <a class="button" href="/"><Button>Back to Browsing</Button></a>
+  {/if}
+</div>
 
 <style>
   h2 {
-    color: white;
-    background-color: var(--secondary-color);
-    padding: 0.5em;
-    border-radius: 0.2em;
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    font-weight: 700;
+    padding: 0.5em 0;
+    border-width: 3px 0;
+    text-align: center;
+  }
+
+  .checkout-wrapper {
+    padding-bottom: 1em;
   }
 </style>
