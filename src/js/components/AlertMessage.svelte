@@ -1,14 +1,18 @@
 <script>
   export let message;
-  function handleClick(e) {
-    document.body.removeChild(this.parentElement);
+
+  let removed = false;
+  function handleClick() {
+    removed = true;
   }
 </script>
 
-<div class="alert">
-  <p>{message}</p>
-  <span on:click={handleClick}>X</span>
-</div>
+{#if !removed}
+  <div class="alert">
+    <p>{message}</p>
+    <button on:click={handleClick}>X</button>
+  </div>
+{/if}
 
 <style>
   .alert {
@@ -19,11 +23,17 @@
     background-color: var(--primary-color);
     border: 1px solid darkorange;
     width: 20em;
+    margin-bottom: 0.1em;
   }
   .alert > p {
     margin: 0;
   }
-  .alert > span {
+  .alert > button {
+    border: none;
+    color: inherit;
+    background-color: inherit;
+    font-weight: inherit;
+    font-size: inherit;
     cursor: pointer;
     margin-left: 1em;
   }

@@ -36,8 +36,10 @@
     const res = await checkoutConnection.postOrder(order);
     orderState = res.ok ? "success" : "failed";
     orderResData = await res.json();
+    window.scrollTo(0, 0);
     if (res.ok) {
       setLocalStorage("so-cart", []);
+      count.set(0);
     }
   };
 
@@ -171,34 +173,32 @@
   $: checkoutHeading = CheckoutHeadingMap[orderState];
 </script>
 
-<div class="checkout-wrapper">
-  <h2>{checkoutHeading}</h2>
-  {#if orderState == "failed"}
-    {#each Object.keys(orderResData) as alert}
-      <AlertMessage message={`${orderResData[alert]}`}></AlertMessage>
-    {/each}
-  {/if}
-  {#if orderState != "success"}
-    <form on:submit|preventDefault={handleSubmit}>
-      {#each fieldGroups as group}
-        <FormFieldGroup fields={group.fields} legend={group.legend} />
+{#if ($count <= 0 && orderState !== "success") || orderResData == {}}
+  <p>Your cart is empty; no order to process</p>
+{:else}
+  <div class="checkout-wrapper">
+    <h2>{checkoutHeading}</h2>
+    {#if orderState != "success"}
+      {#each Object.keys(orderResData) as alert}
+        <AlertMessage message={`${orderResData[alert]}`}></AlertMessage>
       {/each}
-      <Button type="submit" title="Place Order"
-        >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
-      >
-    </form>
-  {/if}
-  {#if orderState === "success"}
-    <p>Thank you for your order.</p>
-    <p>Your order number is: {orderResData.orderId}</p>
-  {/if}
-  {#if orderState === "failed"}
-    <p>Sorry, there was a problem placing your order.</p>
-  {/if}
-  {#if orderState === "success"}
-    <a class="button" href="/"><Button>Back to Browsing</Button></a>
-  {/if}
-</div>
+      <form on:submit|preventDefault={handleSubmit}>
+        {#each fieldGroups as group}
+          <FormFieldGroup fields={group.fields} legend={group.legend} />
+        {/each}
+        <Button type="submit" title="Place Order"
+          >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
+        >
+      </form>
+    {:else if orderState === "success"}
+      <p>Thank you for your order.</p>
+      <p>Your order number is: {orderResData.orderId}</p>
+      <a class="button" href="/"><Button>Back to Browsing</Button></a>
+    {:else if orderState === "failed"}
+      <p>Sorry, there was a problem placing your order.</p>
+    {/if}
+  </div>
+{/if}
 
 <style>
   h2 {
