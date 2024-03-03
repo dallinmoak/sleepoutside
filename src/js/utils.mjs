@@ -1,4 +1,3 @@
-import AlertMessage from "./components/AlertMessage.svelte";
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
@@ -45,9 +44,4 @@ export function renderComponent(selector, Component, props) {
     props: props,
   });
   return myComponent;
-}
-
-export function alertMessage(message, scroll = true) {
-  renderComponent("body", AlertMessage, { message });
-  if (scroll) window.scrollTo(0, 0);
 }
