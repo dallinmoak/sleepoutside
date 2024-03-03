@@ -3,7 +3,7 @@
   import { getTotalPrice } from "../../productDetails.mjs";
   import Button from "../ui/Button.svelte";
   import FormFieldGroup from "../ui/FormFieldGroup.svelte";
-  import { getLocalStorage } from "../../utils.mjs";
+  import { getLocalStorage, setLocalStorage } from "../../utils.mjs";
   import ProductData from "../../ProductData.mjs";
   import { beforeUpdate } from "svelte";
   import AlertMessage from "../AlertMessage.svelte";
@@ -37,7 +37,7 @@
     orderState = res.ok ? "success" : "failed";
     orderResData = await res.json();
     if (res.ok) {
-      //TODO: clear cart
+      setLocalStorage("so-cart", []);
     }
   };
 
