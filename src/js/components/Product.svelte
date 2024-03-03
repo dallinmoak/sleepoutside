@@ -29,23 +29,27 @@
 {#await product}
   <p>Loading...</p>
 {:then newProduct}
-  <h3>{newProduct.Brand.Name}</h3>
-  <h2 class="divider">{newProduct.NameWithoutBrand}</h2>
-  <img
-    class="divider"
-    src={newProduct.Images.PrimaryExtraLarge}
-    alt={newProduct.Name}
-  />
-  <p>${newProduct.FinalPrice}</p>
-  <p>{newProduct.Colors[0].ColorName}</p>
-  <p>
-    {@html newProduct.DescriptionHtmlSimple}
-  </p>
-  <div>
-    <Button onClick={() => handleAddCart(newProduct)} title="Add to Cart"
-      >Add to Cart</Button
-    >
-  </div>
+  {#if !newProduct.error}
+    <h3>{newProduct.Brand.Name}</h3>
+    <h2 class="divider">{newProduct.NameWithoutBrand}</h2>
+    <img
+      class="divider"
+      src={newProduct.Images.PrimaryExtraLarge}
+      alt={newProduct.Name}
+    />
+    <p>${newProduct.FinalPrice}</p>
+    <p>{newProduct.Colors[0].ColorName}</p>
+    <p>
+      {@html newProduct.DescriptionHtmlSimple}
+    </p>
+    <div>
+      <Button onClick={() => handleAddCart(newProduct)} title="Add to Cart"
+        >Add to Cart</Button
+      >
+    </div>
+  {:else}
+    <p>Product not found</p>
+  {/if}
 {:catch error}
   <p>Something went wrong: {error.message}</p>
 {/await}
