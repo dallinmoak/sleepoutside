@@ -3,9 +3,10 @@
   import { getTotalPrice } from "../../productDetails.mjs";
   import Button from "../ui/Button.svelte";
   import FormFieldGroup from "../ui/FormFieldGroup.svelte";
-  import { getLocalStorage } from "../../utils.mjs";
+  import { getLocalStorage, setLocalStorage } from "../../utils.mjs";
   import ProductData from "../../ProductData.mjs";
   import { beforeUpdate } from "svelte";
+  import AlertMessage from "../AlertMessage.svelte";
 
   let subtotal = getTotalPrice();
   $: shipping = 10 + $count * 2;
@@ -33,12 +34,12 @@
     order.tax = tax;
     const checkoutConnection = new ProductData();
     const res = await checkoutConnection.postOrder(order);
-    // window.location = "/";
-    // history.pushState({}, "", "/");
     orderState = res.ok ? "success" : "failed";
     orderResData = await res.json();
+    window.scrollTo(0, 0);
     if (res.ok) {
-      //TODO: clear cart
+      setLocalStorage("so-cart", []);
+      count.set(0);
     }
   };
 
@@ -55,6 +56,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "lname",
@@ -62,6 +64,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "street",
@@ -69,6 +72,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "city",
@@ -76,6 +80,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "state",
@@ -83,6 +88,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "zip",
@@ -90,6 +96,7 @@
             type: "number",
             readOnly: false,
             value: null,
+            required: true,
           },
         ],
       },
@@ -102,6 +109,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "expiration",
@@ -109,6 +117,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
           {
             id: "code",
@@ -116,6 +125,7 @@
             type: "text",
             readOnly: false,
             value: null,
+            required: true,
           },
         ],
       },
@@ -127,28 +137,28 @@
             label: `Item Subtotal(${$count}):`,
             type: "number",
             readOnly: true,
-            value: `$${subtotal}`,
+            value: `$${parseFloat(subtotal).toFixed(2)}`,
           },
           {
             id: "shipping",
             label: "Shipping Estimate:",
             type: "number",
             readOnly: true,
-            value: `$${shipping}`,
+            value: `$${shipping.toFixed(2)}`,
           },
           {
             id: "tax",
             label: "Tax:",
             type: "number",
             readOnly: true,
-            value: `$${tax}`,
+            value: `$${tax.toFixed(2)}`,
           },
           {
             id: "orderTotal",
             label: "Order Total:",
             type: "number",
             readOnly: true,
-            value: `$${orderTotal}`,
+            value: `$${orderTotal.toFixed(2)}`,
           },
         ],
       },
@@ -163,25 +173,44 @@
   $: checkoutHeading = CheckoutHeadingMap[orderState];
 </script>
 
-<h2>{checkoutHeading}</h2>
-{#if orderState != "sucess"}
-  <form on:submit|preventDefault={handleSubmit}>
-    {#each fieldGroups as group}
-      <FormFieldGroup fields={group.fields} legend={group.legend} />
-    {/each}
-    <Button type="submit" title="Place Order"
-      >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
-    >
-  </form>
+{#if ($count <= 0 && orderState !== "success") || orderResData == {}}
+  <p>Your cart is empty; no order to process</p>
+{:else}
+  <div class="checkout-wrapper">
+    <h2>{checkoutHeading}</h2>
+    {#if orderState != "success"}
+      {#each Object.keys(orderResData) as alert}
+        <AlertMessage message={`${orderResData[alert]}`}></AlertMessage>
+      {/each}
+      <form on:submit|preventDefault={handleSubmit}>
+        {#each fieldGroups as group}
+          <FormFieldGroup fields={group.fields} legend={group.legend} />
+        {/each}
+        <Button type="submit" title="Place Order"
+          >{orderState == "failed" ? "Try Again" : "Place Order"}</Button
+        >
+      </form>
+    {:else if orderState === "success"}
+      <p>Thank you for your order.</p>
+      <p>Your order number is: {orderResData.orderId}</p>
+      <a class="button" href="/"><Button>Back to Browsing</Button></a>
+    {:else if orderState === "failed"}
+      <p>Sorry, there was a problem placing your order.</p>
+    {/if}
+  </div>
 {/if}
-{#if orderState === "success"}
-  <p>Thank you for your order.</p>
-  <p>Your order number is: {orderResData.orderId}</p>
-{/if}
-{#if orderState === "failed"}
-  <p>Sorry, there was a problem placing your order.</p>
-  <p>the payment server said: <code>{JSON.stringify(orderResData)}</code></p>
-{/if}
-{#if orderState === "success"}
-  <a class="button" href="/"><Button>Back to Browsing</Button></a>
-{/if}
+
+<style>
+  h2 {
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    font-weight: 700;
+    padding: 0.5em 0;
+    border-width: 3px 0;
+    text-align: center;
+  }
+
+  .checkout-wrapper {
+    padding-bottom: 1em;
+  }
+</style>
