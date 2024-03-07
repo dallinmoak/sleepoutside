@@ -23,7 +23,11 @@ export default class ProductData {
   async getProductData(id) {
     const res = await fetch(`${this.baseUrl}product/${id}`);
     const data = await convertToJson(res);
-    return data.Result;
+    if (data.Result) {
+      return data.Result;
+    } else {
+      return { error: "No data found" };
+    }
   }
 
   async postOrder(order) {
