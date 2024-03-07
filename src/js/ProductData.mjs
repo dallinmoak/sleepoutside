@@ -45,4 +45,21 @@ export default class ProductData {
       return { Error: e };
     }
   }
+
+  async loginRequest(creds) {
+    const res = await fetch(`${this.baseUrl}login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(creds),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      const data = await res.json();
+      console.log(res.status, data);
+    }
+  }
 }
