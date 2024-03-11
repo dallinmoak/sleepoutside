@@ -5,8 +5,8 @@
   redirect = redirect === null ? undefined : redirect;
   let resource = getParam("resource");
   resource = resource === null ? undefined : resource;
-  let username = "user1@email.com";
-  let password = "user1";
+  let username;
+  let password;
   const handleLogin = async () => {
     login({ username, password }, redirect);
   };
