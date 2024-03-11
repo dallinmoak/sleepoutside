@@ -1,3 +1,5 @@
+import { getLocalStorage } from "./utils.mjs";
+
 function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -58,8 +60,19 @@ export default class ProductData {
       const data = await res.json();
       return data;
     } else {
+      //theoretical error handling
       const data = await res.json();
-      console.log(res.status, data);
+      return data;
     }
+  }
+  async getOrders() {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${getLocalStorage("so-token")}`,
+      },
+    };
+    const res = await fetch(`${this.baseUrl}orders`, options);
+    const data = await convertToJson(res);
+    return data;
   }
 }
