@@ -2,13 +2,19 @@
   import { getParam } from "../../utils.mjs";
   import { login } from "../../auth.mjs";
   let redirect = getParam("redirect");
-  let username;
-  let password;
+  redirect = redirect === null ? undefined : redirect;
+  let resource = getParam("resource");
+  resource = resource === null ? undefined : resource;
+  let username = "user1@email.com";
+  let password = "user1";
   const handleLogin = async () => {
-    console.log("here");
     login({ username, password }, redirect);
   };
 </script>
+
+{#if redirect && resource}
+  <p>You need to log in to access {resource}</p>
+{/if}
 
 <h1>Login</h1>
 
