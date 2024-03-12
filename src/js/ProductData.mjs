@@ -1,3 +1,5 @@
+import { getLocalStorage } from "./utils.mjs";
+
 function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -44,5 +46,33 @@ export default class ProductData {
     } catch (e) {
       return { Error: e };
     }
+  }
+
+  async loginRequest(creds) {
+    const res = await fetch(`${this.baseUrl}login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(creds),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      //theoretical error handling
+      const data = await res.json();
+      return data;
+    }
+  }
+  async getOrders() {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${getLocalStorage("so-token")}`,
+      },
+    };
+    const res = await fetch(`${this.baseUrl}orders`, options);
+    const data = await convertToJson(res);
+    return data;
   }
 }
