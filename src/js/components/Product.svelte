@@ -9,6 +9,7 @@
   } from "../productDetails.mjs";
   import { cartCount } from "../stores.mjs";
   import Button from "./ui/Button.svelte";
+  import DiscountIndicator from "./ui/DiscountIndicator.svelte";
 
   const productId = getParam("product");
   const myProduct = new ProductData();
@@ -37,7 +38,13 @@
       src={newProduct.Images.PrimaryExtraLarge}
       alt={newProduct.Name}
     />
-    <p>${newProduct.FinalPrice}</p>
+    <div class="price">
+      <p>${newProduct.FinalPrice}</p>
+      <DiscountIndicator
+        list={newProduct.ListPrice}
+        suggested={newProduct.SuggestedRetailPrice}
+      />
+    </div>
     <p>{newProduct.Colors[0].ColorName}</p>
     <p>
       {@html newProduct.DescriptionHtmlSimple}
@@ -57,5 +64,11 @@
 <style>
   img {
     width: 100%;
+  }
+
+  .price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 </style>
